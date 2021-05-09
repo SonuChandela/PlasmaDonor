@@ -1,5 +1,5 @@
 import React from 'react';
-import './globcss/custome.css';
+import '../globcss/custom.css';
 import {Link} from "react-router-dom";
 
 const Foot = () =>{
@@ -18,13 +18,23 @@ const Foot = () =>{
                         <h5>Quick Links</h5>
                         <ul>
                             <li>
-                                <Link to="/">
+                                <Link to="/register">
                                         Donate Plasma
                                 </Link>
                             </li>
                             <li>
-                                <Link to="/">
+                                <Link to="/register">
                                         Request Plasma
+                                </Link>
+                            </li>
+                            <li>
+                                <Link to="/list/donor">
+                                        Plasma Donor List
+                                </Link>
+                            </li>
+                            <li>
+                                <Link to="/list/request">
+                                        Plasma Request List
                                 </Link>
                             </li>
                         </ul>
@@ -38,7 +48,7 @@ const Foot = () =>{
                                 </Link>
                             </li>
                             <li>
-                                <Link to="https://www.mohfw.gov.in/">
+                                <Link to="https://www.mohfw.gov.in/" >
                                     Ministry of health and Family Welfare
                                 </Link>
                             </li>

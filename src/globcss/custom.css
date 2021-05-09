@@ -33,6 +33,8 @@
     margin: 0 10px;
     letter-spacing: 3px;
     text-transform: uppercase;
+    padding-right: 0.5rem !important;
+    padding-left: 0.5rem !important;
 }
 
 .nav-link:hover{
@@ -191,4 +193,33 @@
 
 .donor-card div a{
     background-color:var(--fntclr) !important;
+}
+
+/* list page css */
+
+.bloodfilter ul {
+    margin: 4px 0;
+    display: flex;
+    justify-content: center;
+}
+
+.bloodfilter ul li {
+    list-style:none;
+    float:left;
+    width:calc(100%/8 - 1.5%);
+    background-color:var(--fntclr);
+    cursor: pointer;
+    border-radius: 3px;
+    padding: 5px;
+    margin: 0 3px;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.bloodfilter ul li span{
+    font-size:1.2em;
+    font-weight:600;
+    color:var(--bright);
 }

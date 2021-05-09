@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import './globcss/custome.css';
-import Menu from "./Header";
-import Footer from "./Footer";
-import Searchbar from "./Searchbar";
+import '../globcss/custom.css';
+import Searchbar from "../components/Searchbar";
 import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -11,7 +9,6 @@ class List extends Component{
     render(){
         return(
             <>
-            <Menu/>
             <div className="bg-frntdark">
                 <div className="container">
                     <div className="row">
@@ -27,8 +24,37 @@ class List extends Component{
 
 
             <div className="container">
-                <div className="row mt-4 mb-4">
+                <div className="row mt-3 mb-3 bloodfilter">
+                    <ul className="col-lg-12 col-md-12">
+                        <li>
+                            <span>A+</span>
+                        </li>
+                        <li>
+                            <span>A-</span>
+                        </li>
+                        <li>
+                            <span>B+</span>
+                        </li>
+                        <li>
+                            <span>B-</span>
+                        </li>
+                        <li>
+                            <span>AB+</span>
+                        </li>
+                        <li>
+                            <span>AB-</span>
+                        </li>
+                        <li>
+                            <span>O+</span>
+                        </li>
+                        <li>
+                            <span>O-</span>
+                        </li>
 
+                    </ul>
+                </div>
+
+                <div className="row mt-4 mb-4">
                     <div className="col-lg-3 col-md-6 col-12">
                         <div className="donor-card">
                             <div className="col-lg-12 mt-2 mb-2">
@@ -84,7 +110,7 @@ class List extends Component{
                                 </ul>
                             </div>
                             <div className="col-lg-12">
-                                <Button href="tel:999986329" block>Contact</Button> 
+                                <Button href="tel:999986329" className="border-0" block>Contact</Button> 
                             </div>
                         </div>
                     </div>
@@ -159,7 +185,7 @@ class List extends Component{
                                 </ul>
                             </div>
                             <div className="col-lg-12">
-                                <Button href="tel:999986329" block>Contact</Button> 
+                                <Button href="tel:999986329"className="border-0" block>Contact</Button> 
                             </div>
                         </div>
                     </div>
@@ -233,7 +259,7 @@ class List extends Component{
                                 </ul>
                             </div>
                             <div className="col-lg-12">
-                                <Button href="tel:999986329" block>Contact</Button> 
+                                <Button href="tel:999986329" className="border-0" block>Contact</Button> 
                             </div>
                         </div>
                     </div>
@@ -307,15 +333,13 @@ class List extends Component{
                                 </ul>
                             </div>
                             <div className="col-lg-12">
-                                <Button href="tel:999986329" block>Contact</Button> 
+                                <Button href="tel:999986329" className="border-0" block>Contact</Button> 
                             </div>
                         </div>
                     </div>
 
                 </div>
             </div>
-            
-            <Footer/>
             </>
         )
      }

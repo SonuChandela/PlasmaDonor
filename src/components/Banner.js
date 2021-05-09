@@ -1,5 +1,5 @@
 import React from 'react';
-import './globcss/custome.css';
+import '../globcss/custom.css';
 import Searchbar from './Searchbar';
 
 
@@ -11,7 +11,7 @@ const Banner = () =>{
                 <div className="col-md-6 ">
                     <div className="">
                         <h1 className="text-uppercase f-color text-left">
-                            <span style={{fontSize:"1em",fontWeight:"800",letterSpacing:"6px"}}>                                Donate Plasma                            </span> <br/>
+                            <span style={{fontSize:"0.9em",fontWeight:"800",letterSpacing:"6px"}}>                                Donate Plasma                            </span> <br/>
                             <span style={{fontSize:"0.8em",fontWeight:"700",letterSpacing:"15px",color:"#ff5363"}}>To Save Life</span>
                         </h1>
                         <p style={{fontSize:"1.1em",textAlign:"left",fontWeight:"600", textTransform:"capitalize"}}>This website would help Donors, as well as patients in need of plasma .we allow you to search plasma Donors within your city area and having a specific blood group.If you have fully recovered from COVID-19,or if you are a recipient get your self registered on the Website and help the society. We are all in this together and we will win as a community.</p>
