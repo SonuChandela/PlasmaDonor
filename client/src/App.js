@@ -1,8 +1,10 @@
 import React from 'react'
 import './App.css';
-import Home from './Home';
-import List from './List';
-import Enrol from './Register';
+import Home from './pages/Home';
+import Head from './components/Header';
+import Foot from "./components/Footer";
+import List from './pages/List';
+import Enrol from './components/Register';
 import { BrowserRouter,Route, Switch   } from "react-router-dom";
 
 function App() {
@@ -11,11 +13,13 @@ function App() {
           <>
             <div className="bg-body">
               <BrowserRouter>
-                <Switch>
-                  <Route exact path="/" component={Home}/>
-                  <Route path="/list/:user" component={List}/>
-                  <Route exact path="/Register" component={Enrol}/>
-                </Switch>
+                <Head/> 
+                  <Switch>
+                    <Route exact path="/" component={Home}/>
+                    <Route path="/list/:rquesttype" component={List}/>
+                    <Route exact path="/Register" component={Enrol}/>
+                  </Switch>
+                <Foot/>
               </BrowserRouter>
             </div>
          </>
