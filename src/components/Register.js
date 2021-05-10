@@ -11,14 +11,13 @@ class Enrol extends Component{
                 <div className="container ">
                     <div className="row justify-content-center">
                         <div className="col-lg-12 col-md-12 col-12 rounded bg-bright mt-3 pt-4 mb-4 pb-4">
-                            <h2 className="f-color  text-center">Register</h2>
+                            <h2 className="f-color text-center">Register</h2>
                             <Form>
                             <Form.Group>
                                 <Form.Label className="f-color fw-600 text-uppercase">User Type</Form.Label>
                                 <Form.Control as="select" >
                                     <option>Donate Plasma</option>
                                     <option>Request Plasma</option>
-                                    <option>Guest</option>
                                 </Form.Control>
                                 <br/>
                                 <Form.Label className="f-color fw-600 text-uppercase">Name</Form.Label>
@@ -48,8 +47,8 @@ class Enrol extends Component{
                             <Form.Label className="f-color fw-600 text-uppercase">NEGATIVE REPORT DATE:</Form.Label>
                                 <Form.Control type="date" placeholder="Report Date" />
                             <br/>
-                            <Form.Label className="f-color fw-600 text-uppercase">Area</Form.Label>
-                                <Form.Control type="text" placeholder="Area " />
+                            <Form.Label className="f-color fw-600 text-uppercase">City / Area</Form.Label>
+                                <Form.Control type="text" placeholder="City / Area" />
                                 <br/>
                             <Form.Label className="f-color fw-600 text-uppercase">Pincode</Form.Label>
                                 <Form.Control type="number" placeholder="110001" />
