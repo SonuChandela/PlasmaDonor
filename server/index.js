@@ -2,14 +2,12 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const router = require('./router/user.js');
-const { urlencoded } = require('body-parser');
 
 require('dotenv').config();
-// console.log(require('dotenv').config());
 
 const app = express();
 
-app.use(express.json()); // to support JSON-encoded bodies
+app.use(express.json());
 app.use(express.urlencoded());
 
 app.use('/user', router);
