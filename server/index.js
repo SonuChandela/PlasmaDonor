@@ -10,7 +10,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded());
 
-app.use('/user', router);
+app.use('/', router);
 
 mongoose
   .connect(process.env.CONNECTION_URL, {

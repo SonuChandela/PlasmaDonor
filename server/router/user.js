@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../model/user');
 
-router.get('/data', async (req, res) => {
+router.get('/user', async (req, res) => {
   const Users = await User.find();
   res.status(200).json({
     success: true,
@@ -10,7 +10,7 @@ router.get('/data', async (req, res) => {
   });
 });
 
-router.post('/registeruser', async (req, res) => {
+router.post('/register', async (req, res) => {
   const Users = await User.create(req.body);
   res.status(201).json({
     success: true,
