@@ -1,0 +1,23 @@
+
+.status {
+    padding: 0;
+    margin: 10px 0;
+  }
+  
+  .status li {
+    list-style: none;
+    padding: 4px;
+    font-size: 1.3em;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #50658e;
+  }
+  
+  .status li h6 {
+    margin: 2px 0;
+    text-align: center;
+    color: #ff5363;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+  

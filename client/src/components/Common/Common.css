@@ -1,0 +1,27 @@
+
+/* header css */
+
+.nav-link {
+    font-size: 1em;
+    font-weight: 600;
+    margin: 0 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding-right: 0.5rem !important;
+    padding-left: 0.5rem !important;
+  }
+  
+  .nav-link:hover {
+    color: var(--fntclr);
+  }
+  
+  .navbar-nav .nav-btn {
+    font-weight: 500;
+    background: #50658e;
+    color: #fff !important;
+    letter-spacing: 1px;
+    border-radius: 3px;
+    text-transform: uppercase;
+  }
+
+  /* header css */
