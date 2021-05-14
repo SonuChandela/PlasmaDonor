@@ -2,82 +2,109 @@ import React, { Component } from 'react';
 import Form from 'react-bootstrap/Form';
 import "../../globcss/App.css"
 import Button from 'react-bootstrap/Button';
+import axios from 'axios';
 
 class Enrol extends Component {
   constructor(props){
     super(props);
     this.state = {
-      setData : {},
-      usertype: this.props.userType,
-      setValidate : {
+      setData : {
+        usertype : "",
         name: "",
+        bloodgroup : "",
         email: "",
-        mobile :"",
+        contact :"",
         age : "",
-        report: "",
+        reportDate: "",
         area : "",
         pincode : ""
-      }
+      },
+      setValidate : {
+        usertype: "",
+        name: "",
+        bloodgroup : "",
+        email: "",
+        contact :"",
+        age : "",
+        reportDate: "",
+        area : "",
+        pincode : ""
+      },
+      usertype: this.props.userType
     }
     this.validAlerts = this.validAlerts.bind(this);
     this.submitForm = this.submitForm.bind(this);
     this.reportDay = this.reportDay.bind(this);
+    this.formisvlid = this.formisvlid.bind(this);
     this.textInput = React.createRef();
-    
-
   }
-  
- 
 
-  validAlerts(e){
+  validAlerts(event){
     const emailRegex = RegExp(
       /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
     );
     const data  = this.state.setData;
-    data[e.target.name] = e.target.value;
+    data[event.target.name] = event.target.value;
     let users = this.textInput.current.value;
-    let validate = {...this.state.setValidate};
-    const{name,value} = e.target;
+    let setValidate = {...this.state.setValidate};
+    const{name,value} = event   .target;
     switch (name){
+      case "user":
+        setValidate.usertype = 
+          value.length <= 0 ? "select a User Type" : "";
+        break;
       case "name":
-        validate.name = (value.length <= 0) ? "Enter Your Full Name" : "";
+        setValidate.name = 
+          value.length <= 0 ? "Enter Your Full Name" : "";
+        break;
+      case "bloodgroup":
+        setValidate.bloodgroup = 
+          value.length <= 0 ? "Select a Blood Group" : "";
         break;
       case "email":
-        validate.email = ( emailRegex.test(value)) ? "" :"Write a Valid Email Address";
+        setValidate.email = 
+         emailRegex.test(value) ? "" :"Write a Valid Email Address";
         break;
       case "contact": 
-        validate.mobile = (value.length === 10) ?  "" : "Enter a Vaild Mobile Number" ;
+        setValidate.contact = 
+        value.length === 10 ?  "" : "Enter a Vaild Mobile Number" ;
       break;
       case "age": 
-        validate.age = (value > 60 || value < 18) ? "You Are Between 18-60 Years Old" :  "";
+        setValidate.age = 
+        value > 60 || value < 18 ? "You Are Between 18-60 Years Old" :  "";
       break;
       case "reportDate": 
         let calDay = this.reportDay(value);
-        validate.report = (calDay <= 14 ) ? "Donate only 14 days of a COVID-19 positive report if the person is asymptomatic" : "";
+        setValidate.reportDate = 
+        calDay <= 14  ? "Donate only 14 days of a COVID-19 positive report if the person is asymptomatic" : "";
       break;
       case "area": 
-        validate.area = (value.length <= 0) ? "Enter Area Name / City Name" :  "";
+        setValidate.area = 
+        value.length <= 0 ? "Enter Area Name / City Name" :  "";
       break;
       case "pincode": 
-        validate.pincode = (value.length <= 0) ? "Enter a valid Pin Code" :  "";
+        setValidate.pincode = 
+        value.length <= 0 ? "Enter a valid Pin Code" :  "";
       break;
       default:  
     }
-    
     this.setState({
+      ...this.state,
       setData : data ,
-      usertype: users,
-      setValidate :{
-        name: validate.name,
-        email: validate.email,
-        mobile : validate.mobile,
-        age : validate.age,
-        report: validate.report,
-        area : validate.area,
-        pincode : validate.pincode
-      }
+      setValidate,
+      usertype: users
     })
+    console.log(this.state.setData);
   }
+
+  // componentDidMount(){
+  //   this.setState({
+  //     ...this.state,
+  //     setData : {
+
+  //     }
+  //   })
+  // }
 
   reportDay = (reportdate) => {
     const date = new Date();
@@ -89,14 +116,33 @@ class Enrol extends Component {
     return (diffrenceInDay);
   }
 
-
-
-  formisvlid (){
-
+  formisvlid (validation,setdata) {
+    let valid = true;
+    console.log(validation);
+    Object.values(validation).forEach(value => {
+      value.length > 0  && (valid = false);
+  });
+  console.log(setdata);
+  Object.values(setdata).forEach(value => {
+    value.length < 1  && (valid = false);
+  });
+  console.log(valid);
+// console.log(valid);
+return valid;
   }
   submitForm(e) {
-    e.preventDefault()
-    
+    e.preventDefault();
+    if(this.formisvlid(this.state.setValidate,this.state.setData)){
+      alert("working");
+      var data = JSON.stringify(this.state.setData);
+      axios.post("http://localhost:5000/register",data)
+      .then(res => {
+          let msg = res.data;
+          alert(msg.message);
+      })
+      } else {
+          alert("Ooops, Somthing wasn't right Please file all fields.");
+      }
   }
 
   render() {
@@ -108,11 +154,11 @@ class Enrol extends Component {
             <div className="row justify-content-center">
               <div className="col-lg-12 col-md-12 col-12 rounded bg-bright  mb-4 pb-4">
                 <h2 className="f-color  text-center">{(this.state.usertype === this.props.userType) ? "I want to donate plasma" : "I am searching for Plasma donor"}</h2>
-                <Form action="" onSubmit={this.submitForm}>
+                <Form action="" onSubmit={this.validAlerts}>
                   <Form.Group>
 
                     <Form.Label className="f-color fw-600 text-uppercase">User Type</Form.Label>
-                    <Form.Control as="select" ref={this.textInput} onChange={this.validAlerts} name="userType">
+                    <Form.Control as="select" ref={this.textInput} onChange={this.validAlerts} name="usertype">
                       <option value="donate">Donate Plasma</option>
                       <option value="request">Request Plasma</option>
                     </Form.Control>
@@ -140,8 +186,8 @@ class Enrol extends Component {
                     <br />
 
                     <Form.Label className="f-color fw-600 text-uppercase">Mobile Number</Form.Label>
-                    <Form.Control type="tel" placeholder="9999999999" value={setData.contact || ""} className={(setValidate.mobile.length > 0 ) ? "brdAlert" : ""} name="contact" onChange={this.validAlerts}/>
-                    {(setValidate.mobile.length > 0 ) ? <small className="f-alert">{setValidate.mobile}</small> : ""  }
+                    <Form.Control type="tel" placeholder="9999999999" value={setData.contact || ""} className={(setValidate.contact.length > 0 ) ? "brdAlert" : ""} name="contact" onChange={this.validAlerts}/>
+                    {(setValidate.contact.length > 0 ) ? <small className="f-alert">{setValidate.contact}</small> : ""  }
                     <br />
 
                     {
@@ -152,8 +198,8 @@ class Enrol extends Component {
                         {(setValidate.age.length > 0 ) ? <small className="f-alert">{setValidate.age}</small> : ""}
                         <br />
                       <Form.Label className="f-color fw-600 text-uppercase">NEGATIVE REPORT DATE:</Form.Label>
-                      <Form.Control type="date" placeholder="Report Date" name="reportDate" value={setData.reportDate || ""} className={(setValidate.report.length > 0 ) ? "brdAlert" : ""}  onChange={this.validAlerts}/> 
-                      {(setValidate.report.length > 0 ) ? <small className="f-alert">{setValidate.report}</small> : ""  }
+                      <Form.Control type="date" placeholder="Report Date" name="reportDate" value={setData.reportDate || ""} className={(setValidate.reportDate.length > 0 ) ? "brdAlert" : ""}  onChange={this.validAlerts}/> 
+                      {(setValidate.reportDate.length > 0 ) ? <small className="f-alert">{setValidate.reportDate}</small> : ""  }
                       <br/>
                       </> : ''
                     }
@@ -165,7 +211,7 @@ class Enrol extends Component {
                     <Form.Control type="text" placeholder="110001" name="pincode" maxlength="6" size="6" value={setData.pincode || ""} className={(setValidate.pincode.length > 0 ) ? "brdAlert" : ""} onChange={this.validAlerts}/>
                     {(setValidate.pincode.length > 0 ) ? <small className="f-alert">{setValidate.pincode}</small> : ""  }
                     <br />
-                    <Button className="bg-frntdark border-0" type="submit" block>
+                    <Button className="bg-frntdark border-0" type="submit" onClick={this.submitForm} block>
                       Submit
                     </Button>
                   </Form.Group>
