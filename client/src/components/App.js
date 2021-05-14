@@ -1,5 +1,5 @@
 import React from 'react';
-import '../globcss/App.css';
+// import '../globcss/App.css';
 import Home from '../pages/Home';
 import Head from './Common/Header';
 import Foot from './Common/Footer';

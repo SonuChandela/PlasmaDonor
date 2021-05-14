@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Nav, Navbar, Button, Modal } from 'react-bootstrap';
-// import '../../globcss/App.css'; 
+import { Nav, Navbar, Modal , Button } from 'react-bootstrap';
+import './Common.css'; 
 import { NavLink, Link } from 'react-router-dom';
 import Enrol from '../Register/Register';
 
@@ -19,24 +19,23 @@ class Head extends Component {
   }
 
   render() {
-    console.log(this.state.show);
     return (
       <>
         {/* modal start */}
-        <Modal show={this.state.show} size="lg">
-          {/* <Modal.Header closeButton>
-              <Modal.Title>Modal heading</Modal.Title>
-            </Modal.Header> */}
-          <Modal.Body>
+        <Modal show={this.state.show} size="lg" onHide={this.acceptTerm}>
+          <Modal.Header className="border-0" closeButton>
+              {/* <Modal.Title>Modal heading</Modal.Title> */}
+            </Modal.Header>
+          <Modal.Body className="pt-0 pb-0">
             {/* eroll  */}
-            <Enrol />
+            <Enrol userType="donate"/>
           </Modal.Body>
-          <Modal.Footer>
+          {/* <Modal.Footer>
             <Button variant="secondary" onClick={this.acceptTerm}>
               Close
             </Button>
             <Button variant="primary">Save Changes</Button>
-          </Modal.Footer>
+          </Modal.Footer> */}
         </Modal>
 
         {/* modal close  */}
@@ -57,9 +56,9 @@ class Head extends Component {
                 <NavLink to="/list/donor" className="nav-link text-uppercase" activeStyle={{ color: '#2a81ea' }}>
                   Donor List
                 </NavLink>
-                <NavLink to="/register" className="nav-link nav-btn">
+                <Button className="nav-btn" onClick={this.acceptTerm}>
                   Register Now
-                </NavLink>
+                </Button>
               </Nav>
             </Navbar.Collapse>
           </div>

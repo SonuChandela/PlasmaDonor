@@ -2,6 +2,7 @@
   --body: #f7f9fe;
   --fntclr: #50658e;
   --bright: #fff;
+  --alert: #ff5464;
 }
 
 .bg-body {
@@ -13,6 +14,14 @@
 }
 .bg-bright {
   background-color: var(--bright) !important;
+}
+
+.f-alert{
+  color:var(--alert) !important;
+}
+
+.brdAlert{
+  border-color:var(--alert) !important;
 }
 
 .f-color {
@@ -27,28 +36,7 @@
   font-weight: 600;
 }
 
-.nav-link {
-  font-size: 1em;
-  font-weight: 600;
-  margin: 0 10px;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  padding-right: 0.5rem !important;
-  padding-left: 0.5rem !important;
-}
-
-.nav-link:hover {
-  color: var(--fntclr);
-}
-
-.navbar-nav .nav-btn {
-  font-weight: 500;
-  background: #50658e;
-  color: #fff !important;
-  letter-spacing: 1px;
-  border-radius: 3px;
-  text-transform: uppercase;
-}
+/* recent donor nd recent request css */
 
 .title {
   font-size: 2.5em;
@@ -65,95 +53,37 @@
 .table th {
   text-align: center;
 }
-/* banner css */
 
-.searchbar {
-  margin-top: -60px;
-}
-.status {
-  padding: 0;
-  margin: 10px 0;
-}
+/*  recent donor nd recent request css */
 
-.status li {
-  list-style: none;
-  padding: 4px;
-  font-size: 1.3em;
-  font-weight: 700;
-  letter-spacing: 1px;
-  color: #50658e;
-}
+/* list page css */
 
-.status li h6 {
-  margin: 2px 0;
-  text-align: center;
-  color: #ff5363;
-  font-weight: 700;
-  letter-spacing: 1px;
-}
-
-
-/* condition page css */
-.conditions div h3 {
-  text-transform: uppercase;
-  color: #ff5363;
-  font-weight: 700;
-  letter-spacing: 1px;
-  margin: 3px 0;
-}
-
-.conditions div ol li {
-  font-size: 1.1em;
-  margin: 8px 0;
-  font-weight: 600;
-  text-transform: uppercase;
-  color: #50658e;
-}
-
-/* footer css */
-
-.foot div p {
-  color: var(--body);
-  letter-spacing: 1px;
-}
-
-.foot div h5 {
-  color: #fff;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.foot div ul {
-  padding: 0;
-}
-
-.foot div ul li {
-  list-style: none;
-  padding: 4px 0;
-}
-
-.foot div ul li a {
-  color: #d6d6d6;
-  text-decoration: none;
-}
-
-.foot div ul li a:hover {
-  color: #fff;
-}
-
-.footsoul {
-  background-color: var(--fntclr);
+.bloodfilter ul {
+  margin: 4px 0;
   display: flex;
-  border-top: 1px solid var(--body);
-  padding: 5px 0;
+  justify-content: center;
 }
 
-.footsoul div span {
-  color: #fff;
-  font-size: 0.8em;
+.bloodfilter ul li {
+  list-style: none;
+  float: left;
+  width: calc(100% / 8 - 1.5%);
+  background-color: var(--fntclr);
+  cursor: pointer;
+  border-radius: 3px;
+  padding: 5px;
+  margin: 0 3px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-/* donor page csss */
+.bloodfilter ul li span {
+  font-size: 1.2em;
+  font-weight: 600;
+  color: var(--bright);
+}
+
 .donor-card {
   display: flex;
   flex-wrap: wrap;
@@ -191,32 +121,4 @@
 
 .donor-card div a {
   background-color: var(--fntclr) !important;
-}
-
-/* list page css */
-
-.bloodfilter ul {
-  margin: 4px 0;
-  display: flex;
-  justify-content: center;
-}
-
-.bloodfilter ul li {
-  list-style: none;
-  float: left;
-  width: calc(100% / 8 - 1.5%);
-  background-color: var(--fntclr);
-  cursor: pointer;
-  border-radius: 3px;
-  padding: 5px;
-  margin: 0 3px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.bloodfilter ul li span {
-  font-size: 1.2em;
-  font-weight: 600;
-  color: var(--bright);
 }

@@ -5,7 +5,7 @@ import { Button } from 'react-bootstrap';
 class Searchbar extends Component {
   render() {
     return (
-      <div className="container searchbar ">
+      <div className="container searchbar">
         <div className="row ">
           <div className="col-md-2"></div>
           <div className="col-md-8 shadow-sm bg-bright pt-4 pb-4  rounded">

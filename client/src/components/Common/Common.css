@@ -17,11 +17,65 @@
   
   .navbar-nav .nav-btn {
     font-weight: 500;
-    background: #50658e;
+    background-color: #50658e;
     color: #fff !important;
+    border:none;
     letter-spacing: 1px;
     border-radius: 3px;
     text-transform: uppercase;
   }
+  .nav-btn:hover{
+    background-color: var(--fntclr) !important;
+  }
+
+  .nav-btn:active{
+    background-color: var(--fntclr) !important;
+    border:none !important;
+  }
 
   /* header css */
+
+
+  /* footer css */
+
+  
+.foot div p {
+  color: var(--body);
+  letter-spacing: 1px;
+}
+
+.foot div h5 {
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.foot div ul {
+  padding: 0;
+}
+
+.foot div ul li {
+  list-style: none;
+  padding: 4px 0;
+}
+
+.foot div ul li a {
+  color: #d6d6d6;
+  text-decoration: none;
+}
+
+.foot div ul li a:hover {
+  color: #fff;
+}
+
+.footsoul {
+  background-color: var(--fntclr);
+  display: flex;
+  border-top: 1px solid var(--body);
+  padding: 5px 0;
+}
+
+.footsoul div span {
+  color: #fff;
+  font-size: 0.8em;
+}

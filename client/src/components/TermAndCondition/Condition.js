@@ -1,4 +1,5 @@
 import React from 'react';
+import './Condition.css';
 
 const Condition = () => {
   return (

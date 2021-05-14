@@ -1,5 +1,5 @@
 import React from 'react';
-import '../../globcss/App.css';
+import './Common.css';
 import { Link } from 'react-router-dom';
 
 const Foot = () => {
