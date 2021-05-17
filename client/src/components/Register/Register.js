@@ -47,7 +47,7 @@ class Enrol extends Component {
     data[event.target.name] = event.target.value;
     let users = this.textInput.current.value;
     let setValidate = {...this.state.setValidate};
-    const{name,value} = event   .target;
+    const{name,value} = event.target;
     switch (name){
       case "user":
         setValidate.usertype = 
@@ -118,27 +118,28 @@ class Enrol extends Component {
 
   formisvlid (validation,setdata) {
     let valid = true;
-    console.log(validation);
     Object.values(validation).forEach(value => {
       value.length > 0  && (valid = false);
   });
-  console.log(setdata);
   Object.values(setdata).forEach(value => {
     value.length < 1  && (valid = false);
   });
-  console.log(valid);
 // console.log(valid);
 return valid;
   }
   submitForm(e) {
     e.preventDefault();
+    console.log(this.state.setValidate);
+    console.log(this.state.setData);
     if(this.formisvlid(this.state.setValidate,this.state.setData)){
-      alert("working");
       var data = JSON.stringify(this.state.setData);
       axios.post("http://localhost:5000/register",data)
       .then(res => {
           let msg = res.data;
-          alert(msg.message);
+          console.log(msg);
+      })
+      .catch(error => {
+        console.log(error)
       })
       } else {
           alert("Ooops, Somthing wasn't right Please file all fields.");
@@ -170,14 +171,14 @@ return valid;
                     <br />
                     <Form.Label className="f-color fw-600 text-uppercase">Blood Group</Form.Label>
                     <Form.Control as="select" name="bloodgroup" onChange={this.validAlerts}>
-                      <option>O+</option>
-                      <option>O-</option>
-                      <option>B+</option>
-                      <option>B-</option>
-                      <option>A+</option>
-                      <option>A-</option>
-                      <option>AB+</option>
-                      <option>AB-</option>
+                      <option value="O+">O+</option>
+                      <option value="O-">O-</option>
+                      <option value="B+">B+</option>
+                      <option value="B-">B-</option>
+                      <option value="A+">A+</option>
+                      <option value="A-">A-</option>
+                      <option value="AB+">AB+</option>
+                      <option value="AB-">AB-</option>
                     </Form.Control>
                     <br />
                     <Form.Label className="f-color fw-600 text-uppercase">Email address</Form.Label>
