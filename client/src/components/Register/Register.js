@@ -108,7 +108,7 @@ class Enrol extends Component {
 
   reportDay = (reportdate) => {
     const date = new Date();
-    let currentDate = date.getMonth() + 1 + "/" + date.getDate() + "/" + date.getFullYear();
+    let currentDate = `${date.getMonth() + 1}/${ date.getDate() }/${ date.getFullYear()}`;
     const testDate = new Date(reportdate);
     const todayDate = new Date(currentDate); 
     let diffrenceInms = todayDate.getTime() - testDate.getTime();
@@ -160,7 +160,7 @@ return valid;
 
                     <Form.Label className="f-color fw-600 text-uppercase">User Type</Form.Label>
                     <Form.Control as="select" ref={this.textInput} onChange={this.validAlerts} name="usertype">
-                      <option value="donate">Donate Plasma</option>
+                      <option selected value="donate">Donate Plasma</option>
                       <option value="request">Request Plasma</option>
                     </Form.Control>
 
