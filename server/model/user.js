@@ -4,31 +4,31 @@ const Validators = require('validator');
 const userSchema = new mongoose.Schema({
   usertype: {
     type: String,
-    required: [true, 'Please Enter Your User Type'],
+    required: [false, 'Please Enter Your User Type'],
   },
   name: {
     type: String,
-    required: [true, 'Please Enter Your Name'],
+    required: [false, 'Please Enter Your Name'],
   },
   bloodgroup: {
     type: String,
-    required: [true, 'Please Enter Your Blood Group'],
+    required: [false, 'Please Enter Your Blood Group'],
   },
   email: {
     type: String,
-    required: [true, 'Please Enter Your Email'],
+    required: [false, 'Please Enter Your Email'],
     unique: false,
     validate: [Validators.isEmail, 'Please Enter Valid Email'],
   },
   mobile: {
     type: String,
-    required: [true, 'Please Enter Your Mobile'],
+    required: [false, 'Please Enter Your Mobile'],
     unique: false,
     max: 10,
   },
   age: {
     type: String,
-    required: [true, 'Please Enter Your Age'],
+    required: [false, 'Please Enter Your Age'],
   },
   report: {
     type: Date,
@@ -36,11 +36,11 @@ const userSchema = new mongoose.Schema({
   },
   area: {
     type: String,
-    required: [true, 'Please Enter Your Area'],
+    required: [false, 'Please Enter Your Area'],
   },
   pincode: {
     type: String,
-    required: [true, 'Please Enter Your Pincode'],
+    required: [false, 'Please Enter Your Pincode'],
   },
   // createdAt: {
   //   type: Date,
