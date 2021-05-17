@@ -87,7 +87,6 @@ class Enrol extends Component {
       setValidate,
       usertype: users,
     });
-    console.log(this.state.setData);
   }
 
   // componentDidMount(){
@@ -125,7 +124,7 @@ class Enrol extends Component {
     console.log(this.state.setValidate);
     console.log(this.state.setData);
     if (this.formisvlid(this.state.setValidate, this.state.setData)) {
-      var data = JSON.stringify(this.state.setData);
+      let data = this.state.setData;
       axios
         .post('http://localhost:5000/register', data)
         .then((res) => {
@@ -225,7 +224,7 @@ class Enrol extends Component {
                       className={
                         setValidate.contact.length > 0 ? 'brdAlert' : ''
                       }
-                      name="contact"
+                      name="mobile"
                       onChange={this.validAlerts}
                     />
                     {setValidate.contact.length > 0 ? (
