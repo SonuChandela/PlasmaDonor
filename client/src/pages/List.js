@@ -3,9 +3,33 @@ import '../globcss/App.css';
 import Searchbar from '../components/Search/Searchbar';
 import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import axios from 'axios';
 
 class List extends Component {
+  constructor(){
+    super();
+    this.state = {
+      userList : ""
+     }
+  }
+  componentDidMount(){
+    axios.get('http://localhost:5000/user')
+    .then(res => {
+      let list = res.data;
+      this.setState({
+        userList : list.Users
+      })
+    });
+  }
+
+  
   render() {
+    const {userList} = this.state;
+    const bloodGroup = ["A+","A-","B+","B-","AB+","AB-","O+","O-"];
+    const bloodGroupList = [];
+    for(const [index,value] of bloodGroup.entries()){
+      bloodGroupList.push(<li key={index}><span>{value}</span></li>)
+    }
     return (
       <>
         <div className="bg-frntdark">
@@ -24,297 +48,63 @@ class List extends Component {
         <div className="container">
           <div className="row mt-3 mb-3 bloodfilter">
             <ul className="col-lg-12 col-md-12">
-              <li>
-                <span>A+</span>
-              </li>
-              <li>
-                <span>A-</span>
-              </li>
-              <li>
-                <span>B+</span>
-              </li>
-              <li>
-                <span>B-</span>
-              </li>
-              <li>
-                <span>AB+</span>
-              </li>
-              <li>
-                <span>AB-</span>
-              </li>
-              <li>
-                <span>O+</span>
-              </li>
-              <li>
-                <span>O-</span>
-              </li>
+              {bloodGroupList}
             </ul>
           </div>
 
           <div className="row mt-4 mb-4">
-            <div className="col-lg-3 col-md-6 col-12">
-              <div className="donor-card">
-                <div className="col-lg-12 mt-2 mb-2">
-                  <div className="row mr-0 ml-0">
-                    <div className="col-lg-2 col-2 pl-2 pr-2 d-flex justify-content-left align-items-center">
-                      <img src={process.env.PUBLIC_URL + '/images/icon/blood-drop.svg'} alt="" />
-                    </div>
-                    <div className="col-lg-8 col-8 pr-0 pl-0">
-                      <span className="mb-0 ">Plasma Request</span>
-                    </div>
-                    <div className="col-lg-2 col-2 d-flex justify-content-center align-items-center bg-frntdark rounded">
-                      <span className="f-bright ">A+</span>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-lg-12 donor-dtl">
-                  <ul>
-                    <li>
-                      <span>
-                        <b className="text-uppercase">Name:</b>
-                        &nbsp; Sonu Chandela
-                      </span>
-                    </li>
-                    <li>
-                      <span>
-                        <b className="text-uppercase">Blood Group:</b>
-                        &nbsp; A+
-                      </span>
-                    </li>
-                    <li>
-                      <span>
-                        <b className="text-uppercase">Mobile:</b>
-                        &nbsp; 9999863929
-                      </span>
-                    </li>
-                    <li>
-                      <span>
-                        <b className="text-uppercase">Area/City:</b>
-                        &nbsp; Delhi
-                      </span>
-                    </li>
-                    <li>
-                      <span>
-                        <b className="text-uppercase">Pin Code:</b>
-                        &nbsp; 110086
-                      </span>
-                    </li>
-                  </ul>
-                </div>
-                <div className="col-lg-12">
-                  <Button href="tel:999986329" className="border-0" block>
-                    Contact
-                  </Button>
-                </div>
-              </div>
-            </div>
-
-            <div className="col-lg-3 col-md-6 col-12">
-              <div className="donor-card">
-                <div className="col-lg-12 mt-2 mb-2">
-                  <div className="row mr-0 ml-0">
-                    <div className="col-lg-2 col-2 pl-2 pr-2 d-flex justify-content-left align-items-center">
-                      <img src={process.env.PUBLIC_URL + '/images/icon/blood-drop.svg'} alt="" />
-                    </div>
-                    <div className="col-lg-8 col-8 pr-0 pl-0">
-                      <span className="mb-0 ">Plasma Donor</span>
-                    </div>
-                    <div className="col-lg-2 col-2 d-flex justify-content-center align-items-center bg-frntdark rounded">
-                      <span className="f-bright ">A+</span>
+            {
+              Object.values(userList).map((userData,i) => {
+                const datalist = userData;
+                return(
+                      <div className="col-lg-3 col-md-6 col-12" key={i} >
+                    <div className="donor-card">
+                      <div className="col-lg-12 mt-2 mb-2">
+                        <div className="row mr-0 ml-0">
+                          <div className="col-lg-2 col-2 pl-2 pr-2 d-flex justify-content-left align-items-center">
+                            <img src={process.env.PUBLIC_URL + '/images/icon/blood-drop.svg'} alt="" />
+                          </div>
+                          <div className="col-lg-8 col-8 pr-0 pl-0">
+                            <span className="mb-0 text-uppercase">{userData.usertype}</span>
+                          </div>
+                          <div className="col-lg-2 col-2 d-flex justify-content-center align-items-center bg-frntdark rounded">
+                            <span className="f-bright ">{userData.bloodgroup}</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-lg-12 donor-dtl">
+                        <ul>
+                          {
+                            Object.entries(datalist).map((list,index) =>{
+                              return(
+                                <>
+                                {
+                                  (list[0] === "_id" || list[0] === "__v" || list[0] === "createdAt" ) ? "":
+                                <>
+                                  <li key={index}>
+                                    <span className={(list[0] === "email") ? "text-lowercase" : ""}>
+                                      <b className="text-uppercase">{list[0]}:</b>
+                                      &nbsp; {list[1]}
+                                    </span>
+                                  </li>
+                                </>
+                                }
+                                </>
+                              )
+                          })
+                          }
+                        </ul>
+                      </div>
+                      <div className="col-lg-12">
+                        <Button href={`tel:${userData.mobile}`} className="border-0" block>
+                          Contact
+                        </Button>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div className="col-lg-12 donor-dtl">
-                  <ul>
-                    <li>
-                      <span>
-                        <b className="text-uppercase">Name:</b>
-                        &nbsp; Sonu Chandela
-                      </span>
-                    </li>
-                    <li>
-                      <span>
-                        <b className="text-uppercase">Blood Group:</b>
-                        &nbsp; A+
-                      </span>
-                    </li>
-                    <li>
-                      <span>
-                        <b className="text-uppercase">Age:</b>
-                        &nbsp; 25
-                      </span>
-                    </li>
-                    <li>
-                      <span>
-                        <b className="text-uppercase">Negative report Date:</b>
-                        &nbsp; 13/4/2021
-                      </span>
-                    </li>
-                    <li>
-                      <span>
-                        <b className="text-uppercase">Mobile:</b>
-                        &nbsp; 9999863929
-                      </span>
-                    </li>
-                    <li>
-                      <span>
-                        <b className="text-uppercase">Area/City:</b>
-                        &nbsp; Delhi
-                      </span>
-                    </li>
-                    <li>
-                      <span>
-                        <b className="text-uppercase">Pin Code:</b>
-                        &nbsp; 110086
-                      </span>
-                    </li>
-                  </ul>
-                </div>
-                <div className="col-lg-12">
-                  <Button href="tel:999986329" className="border-0" block>
-                    Contact
-                  </Button>
-                </div>
-              </div>
-            </div>
-
-            <div className="col-lg-3 col-md-6 col-12">
-              <div className="donor-card">
-                <div className="col-lg-12 mt-2 mb-2">
-                  <div className="row mr-0 ml-0">
-                    <div className="col-lg-2 col-2 pl-2 pr-2 d-flex justify-content-left align-items-center">
-                      <img src={process.env.PUBLIC_URL + '/images/icon/blood-drop.svg'} alt="" />
-                    </div>
-                    <div className="col-lg-8 col-8 pr-0 pl-0">
-                      <span className="mb-0 ">Plasma Donor</span>
-                    </div>
-                    <div className="col-lg-2 col-2 d-flex justify-content-center align-items-center bg-frntdark rounded">
-                      <span className="f-bright ">A+</span>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-lg-12 donor-dtl">
-                  <ul>
-                    <li>
-                      <span>
-                        <b className="text-uppercase">Name:</b>
-                        &nbsp; Sonu Chandela
-                      </span>
-                    </li>
-                    <li>
-                      <span>
-                        <b className="text-uppercase">Blood Group:</b>
-                        &nbsp; A+
-                      </span>
-                    </li>
-                    <li>
-                      <span>
-                        <b className="text-uppercase">Age:</b>
-                        &nbsp; 25
-                      </span>
-                    </li>
-                    <li>
-                      <span>
-                        <b className="text-uppercase">Negative report Date:</b>
-                        &nbsp; 13/4/2021
-                      </span>
-                    </li>
-                    <li>
-                      <span>
-                        <b className="text-uppercase">Mobile:</b>
-                        &nbsp; 9999863929
-                      </span>
-                    </li>
-                    <li>
-                      <span>
-                        <b className="text-uppercase">Area/City:</b>
-                        &nbsp; Delhi
-                      </span>
-                    </li>
-                    <li>
-                      <span>
-                        <b className="text-uppercase">Pin Code:</b>
-                        &nbsp; 110086
-                      </span>
-                    </li>
-                  </ul>
-                </div>
-                <div className="col-lg-12">
-                  <Button href="tel:999986329" className="border-0" block>
-                    Contact
-                  </Button>
-                </div>
-              </div>
-            </div>
-
-            <div className="col-lg-3 col-md-6 col-12">
-              <div className="donor-card">
-                <div className="col-lg-12 mt-2 mb-2">
-                  <div className="row mr-0 ml-0">
-                    <div className="col-lg-2 col-2 pl-2 pr-2 d-flex justify-content-left align-items-center">
-                      <img src={process.env.PUBLIC_URL + '/images/icon/blood-drop.svg'} alt="" />
-                    </div>
-                    <div className="col-lg-8 col-8 pr-0 pl-0">
-                      <span className="mb-0 ">Plasma Donor</span>
-                    </div>
-                    <div className="col-lg-2 col-2 d-flex justify-content-center align-items-center bg-frntdark rounded">
-                      <span className="f-bright ">A+</span>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-lg-12 donor-dtl">
-                  <ul>
-                    <li>
-                      <span>
-                        <b className="text-uppercase">Name:</b>
-                        &nbsp; Sonu Chandela
-                      </span>
-                    </li>
-                    <li>
-                      <span>
-                        <b className="text-uppercase">Blood Group:</b>
-                        &nbsp; A+
-                      </span>
-                    </li>
-                    <li>
-                      <span>
-                        <b className="text-uppercase">Age:</b>
-                        &nbsp; 25
-                      </span>
-                    </li>
-                    <li>
-                      <span>
-                        <b className="text-uppercase">Negative report Date:</b>
-                        &nbsp; 13/4/2021
-                      </span>
-                    </li>
-                    <li>
-                      <span>
-                        <b className="text-uppercase">Mobile:</b>
-                        &nbsp; 9999863929
-                      </span>
-                    </li>
-                    <li>
-                      <span>
-                        <b className="text-uppercase">Area/City:</b>
-                        &nbsp; Delhi
-                      </span>
-                    </li>
-                    <li>
-                      <span>
-                        <b className="text-uppercase">Pin Code:</b>
-                        &nbsp; 110086
-                      </span>
-                    </li>
-                  </ul>
-                </div>
-                <div className="col-lg-12">
-                  <Button href="tel:999986329" className="border-0" block>
-                    Contact
-                  </Button>
-                </div>
-              </div>
-            </div>
+                )
+              })
+            }
           </div>
         </div>
       </>
