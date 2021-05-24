@@ -2,105 +2,78 @@ import React, { Component } from 'react';
 import Form from 'react-bootstrap/Form';
 import '../../globcss/App.css';
 import Button from 'react-bootstrap/Button';
-import axios from 'axios';
+import axios from "axios";
 
 class Enrol extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      setData: {
-        usertype: '',
-        name: '',
-        bloodgroup: '',
-        email: '',
-        contact: '',
-        age: '',
-        reportDate: '',
-        area: '',
-        pincode: '',
-      },
-      setValidate: {
-        usertype: '',
-        name: '',
-        bloodgroup: '',
-        email: '',
-        contact: '',
-        age: '',
-        reportDate: '',
-        area: '',
-        pincode: '',
-      },
-      usertype: this.props.userType,
-    };
-    this.validAlerts = this.validAlerts.bind(this);
-    this.submitForm = this.submitForm.bind(this);
-    this.reportDay = this.reportDay.bind(this);
-    this.formisvlid = this.formisvlid.bind(this);
+      data: {
+        setdata: {},
+        alerterror: {}
+      }
+    }
     this.textInput = React.createRef();
   }
 
-  validAlerts(event) {
+  validAlerts = (e) => {
     const emailRegex = RegExp(
       /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
     );
-    const data = this.state.setData;
-    data[event.target.name] = event.target.value;
-    let users = this.textInput.current.value;
-    let setValidate = { ...this.state.setValidate };
-    const { name, value } = event.target;
+    let { name, value } = e.target;
+    const alertError = {};
     switch (name) {
       case 'user':
-        setValidate.usertype = value.length <= 0 ? 'select a User Type' : '';
+        alertError[name] = (value === "" || value === undefined || value === null) ? 'select a User Type' : "";
+        break;
+      case 'name':
+        alertError[name] = (value <= 0) ? 'Enter Your Full Name' : '';
+        break;
+      case 'bloodgroup':
+        alertError[name] = (value === "") ? 'Select a BloodGroup' : '';
         break;
       case 'email':
-        setValidate.email = emailRegex.test(value)
-          ? ''
-          : 'Write a Valid Email Address';
+        alertError[name] = (emailRegex.test(value)) ? '' : 'Write a Valid Email Address';
         break;
-      case 'contact':
-        setValidate.contact =
-          value.length === 10 ? '' : 'Enter a Vaild Mobile Number';
+      case 'mobile':
+        alertError[name] =
+          (value.length === 10) ? '' : 'Enter a Vaild Mobile Number';
         break;
       case 'age':
-        setValidate.age =
-          value > 60 || value < 18 ? 'You Are Between 18-60 Years Old' : '';
+        alertError[name] =
+          (value > 60 || value < 18) ? 'You Are Between 18-60 Years Old' : '';
         break;
-      case 'reportDate':
+      case 'report':
         let calDay = this.reportDay(value);
-        setValidate.reportDate =
-          calDay <= 14
-            ? 'Donate only 14 days of a COVID-19 positive report if the person is asymptomatic'
-            : '';
+        alertError[name] = (calDay <= 14) ? 'Donate only 14 days of a COVID-19 positive report if the person is asymptomatic' : '';
         break;
       case 'area':
-        setValidate.area =
-          value.length <= 0 ? 'Enter Area Name / City Name' : '';
+        alertError[name] = (value.length <= 0) ? 'Enter Area Name / City Name' : '';
         break;
       case 'pincode':
-        setValidate.pincode = value.length <= 0 ? 'Enter a valid Pin Code' : '';
+        alertError[name] = value.length <= 0 ? 'Enter a valid Pin Code' : '';
         break;
       default:
     }
+
     this.setState({
-      ...this.state,
-      setData: data,
-      setValidate,
-      usertype: users,
-    });
+      data: {
+        setdata: {
+          ...this.state.data.setdata,
+          [e.target.name]: e.target.value,
+        },
+        alerterror: {
+          ...this.state.data.alerterror,
+          [name]: alertError[name]
+        }
+      }
+    })
+
   }
-
-  // componentDidMount(){
-  //   this.setState({
-  //     ...this.state,
-  //     setData : {
-
-  //     }
-  //   })
-  // }
 
   reportDay = (reportdate) => {
     const date = new Date();
-    let currentDate = `${date.getMonth() + 1}/${ date.getDate() }/${ date.getFullYear()}`;
+    let currentDate = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
     const testDate = new Date(reportdate);
     const todayDate = new Date(currentDate);
     let diffrenceInms = todayDate.getTime() - testDate.getTime();
@@ -108,39 +81,95 @@ class Enrol extends Component {
     return diffrenceInDay;
   };
 
-  formisvlid(validation, setdata) {
-    let valid = true;
-    Object.values(validation).forEach((value) => {
-      value.length > 0 && (valid = false);
-    });
-    Object.values(setdata).forEach((value) => {
-      value.length < 1 && (valid = false);
-    });
-    // console.log(valid);
-    return valid;
-  }
-  submitForm(e) {
+  // formisvlid(validation, data) {
+  //   let valid = true;
+  //   Object.values(validation).forEach((value) => {
+  //     value.length > 0 && (valid = false);
+  //   });
+  //   Object.values(data).forEach((value) => {
+  //     value.length < 1 && (valid = false);
+  //   });
+  //   return valid;
+  // }
+
+
+  submitForm = (e) => {
     e.preventDefault();
-    console.log(this.state.setValidate);
-    console.log(this.state.setData);
-    if (this.formisvlid(this.state.setValidate, this.state.setData)) {
-      let data = this.state.setData;
+    let { setdata, alerterror } = this.state.data;
+    let dataPromise = new Promise((resolve, reject) => {
+      for (let validalert of Object.values(alerterror)) {
+        console.log(validalert.length);
+        if (validalert.length < 1) {
+          resolve();
+        } else {
+          reject();
+        }
+      }
+    })
+
+    dataPromise.then(() => {
       axios
-        .post('http://localhost:5000/register', data)
+        .post('http://localhost:5000/register', setdata)
         .then((res) => {
-          let msg = res.data;
+          let msg = res.data.success;
+          alert(msg);
           console.log(msg);
         })
         .catch((error) => {
           console.log(error);
         });
-    } else {
+    }).catch(() => {
       alert("Ooops, Somthing wasn't right Please file all fields.");
-    }
+    })
+    // alert("fille the form")
+    // }
+    // for (let value of Object.values(filleddata)) {
+    //   let dsp = (value.length > 0) ? submitdata = "true" : value
+    //   console.log(dsp);
+    // }
+    // const vst = new Promise(function (resolve, reject) {
+
+
+    //   if (submitdata == "b") {
+    //     resolve("abc");
+    //   }
+    //   else {
+    //     reject("rong");
+    //   }
+    //   // let fillvalue = Object.values(filleddata);
+    //   // let alertvalue = Object.values(alertdata);
+    //   // for (let value of fillvalue) {
+    //   //   (value.length > 0) ? submitdata = "true" : fillvalue
+    //   // }
+    //   // for (let value of alertvalue) {
+    //   //   (value.length < 1) ? submitdata = "true" : alertvalue
+    //   // }
+    // })
+    // vst.then((tst) => {
+    //   console.log(tst);
+    // }).catch((tst) => {
+    //   console.log(tst);
+    // })
+
+
+    // let data = this.state.data.setdata;
+    // axios
+    //   .post('http://localhost:5000/register', data)
+    //   .then((res) => {
+    //     let msg = res.data.setdata;
+    //     console.log(msg);
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   });
+    // if (this.formisvlid(this.state.setValidate, this.state.data)) {
+    // } else {
+    //   alert("Ooops, Somthing wasn't right Please file all fields.");
+    // }
   }
 
   render() {
-    const { setData, setValidate } = this.state;
+    let { setdata, alerterror } = this.state.data;
     return (
       <>
         <div className="d-flex">
@@ -148,36 +177,49 @@ class Enrol extends Component {
             <div className="row justify-content-center">
               <div className="col-lg-12 col-md-12 col-12 rounded bg-bright  mb-4 pb-4">
                 <h2 className="f-color  text-center">
-                  {this.state.usertype === this.props.userType
+                  {setdata.user === this.props.usertype
                     ? 'I want to donate plasma'
-                    : 'I am searching for Plasma donor'}
+                    : (setdata.user === "request plasma") ? 'I am searching for Plasma donor' : 'Select User Type'
+                  }
                 </h2>
                 <Form action="" onSubmit={this.validAlerts}>
                   <Form.Group>
-
-                    <Form.Label className="f-color fw-600 text-uppercase">User Type</Form.Label>
-                    <Form.Control as="select" ref={this.textInput} onChange={this.validAlerts} name="usertype">
-                      <option selected value="donate">Donate Plasma</option>
-                      <option value="request">Request Plasma</option>
+                    <Form.Label className="f-color fw-600 text-uppercase">
+                      User Type
+                    </Form.Label>
+                    <Form.Control
+                      as="select"
+                      ref={this.textInput}
+                      onChange={this.validAlerts}
+                      name="user"
+                      defaultValue=""
+                      className={(alerterror.user !== undefined) ? (alerterror.user.length > 0) ? 'brdAlert' : "" : ""}
+                    >
+                      <option selected value="">Select User Type</option>
+                      <option value="donate plasma">Donate Plasma</option>
+                      <option value="request plasma">Request Plasma</option>
                     </Form.Control>
-
+                    {
+                      (alerterror.user !== undefined) ? (alerterror.user.length > 0) ? (<small className="f-alert text-capitalize">{alerterror.user}</small>) : "" : ""
+                    }
                     <br />
                     <Form.Label className="f-color fw-600 text-uppercase">
                       Full Name
                     </Form.Label>
+
                     <Form.Control
                       type="text"
                       placeholder="Name"
                       name="name"
-                      value={setData.name || ''}
-                      className={setValidate.name.length > 0 ? 'brdAlert' : ''}
+                      value={setdata.name || ''}
+                      className={(alerterror.name !== undefined && alerterror.name.length > 0) ? 'brdAlert' : ""}
                       onChange={this.validAlerts}
                     />
-                    {setValidate.name.length > 0 ? (
-                      <small className="f-alert">{setValidate.name}</small>
-                    ) : (
-                      ''
-                    )}
+
+                    {
+                      (alerterror.name !== undefined) ? (alerterror.name.length > 0) ? (<small className="f-alert">{alerterror.name}</small>) : "" : ""
+                    }
+
                     <br />
                     <Form.Label className="f-color fw-600 text-uppercase">
                       Blood Group
@@ -185,8 +227,11 @@ class Enrol extends Component {
                     <Form.Control
                       as="select"
                       name="bloodgroup"
-                      onChange={this.validAlerts}
+                      className={(alerterror.bloodgroup !== undefined) ? (alerterror.bloodgroup.length > 0) ? 'brdAlert' : "" : ""}
+                      onChange={this.validAlerts} defaultValue=""
+
                     >
+                      <option selected value="">Select Blood Group</option>
                       <option value="O+">O+</option>
                       <option value="O-">O-</option>
                       <option value="B+">B+</option>
@@ -196,6 +241,9 @@ class Enrol extends Component {
                       <option value="AB+">AB+</option>
                       <option value="AB-">AB-</option>
                     </Form.Control>
+                    {
+                      (alerterror.bloodgroup !== undefined) ? (alerterror.bloodgroup.length > 0) ? (<small className="f-alert">{alerterror.bloodgroup}</small>) : "" : ""
+                    }
                     <br />
                     <Form.Label className="f-color fw-600 text-uppercase">
                       Email address
@@ -204,14 +252,13 @@ class Enrol extends Component {
                       type="email"
                       placeholder="name@example.com"
                       name="email"
-                      className={setValidate.email.length > 0 ? 'brdAlert' : ''}
+                      className={(alerterror.email !== undefined) ? (alerterror.email.length > 0) ? 'brdAlert' : "" : ""}
                       onChange={this.validAlerts}
                     />
-                    {setValidate.email.length > 0 ? (
-                      <small className="f-alert">{setValidate.email}</small>
-                    ) : (
-                      ''
-                    )}
+                    {
+                      (alerterror.email !== undefined) ? (alerterror.email.length > 0) ? (<small className="f-alert">{alerterror.email}</small>) : "" : ""
+                    }
+
                     <br />
 
                     <Form.Label className="f-color fw-600 text-uppercase">
@@ -220,18 +267,17 @@ class Enrol extends Component {
                     <Form.Control
                       type="tel"
                       placeholder="9999999999"
-                      value={setData.contact || ''}
-                      className={
-                        setValidate.contact.length > 0 ? 'brdAlert' : ''
-                      }
+                      value={setdata.mobile || ''}
+                      className={(alerterror.mobile !== undefined) ? (alerterror.mobile.length > 0) ? 'brdAlert' : "" : ""}
                       name="mobile"
                       onChange={this.validAlerts}
                     />
-                    {setValidate.contact.length > 0 ? (
-                      <small className="f-alert">{setValidate.contact}</small>
-                    ) : (
-                      ''
-                    )}
+
+
+                    {
+                      (alerterror.mobile !== undefined) ? (alerterror.mobile.length > 0) ? (<small className="f-alert">{alerterror.mobile}</small>) : "" : ""
+                    }
+
                     <br />
 
                     {this.state.usertype === this.props.userType ? (
@@ -243,19 +289,15 @@ class Enrol extends Component {
                           type="text"
                           placeholder="Age"
                           name="age"
-                          value={setData.age || ''}
-                          className={
-                            setValidate.age.length > 0 ? 'brdAlert' : ''
-                          }
+                          value={setdata.age || ''}
+                          className={(alerterror.age !== undefined) ? (alerterror.age.length > 0) ? 'brdAlert' : "" : ""}
                           maxlength="2"
                           size="2"
                           onChange={this.validAlerts}
                         />
-                        {setValidate.age.length > 0 ? (
-                          <small className="f-alert">{setValidate.age}</small>
-                        ) : (
-                          ''
-                        )}
+                        {
+                          (alerterror.age !== undefined) ? (alerterror.age.length > 0) ? (<small className="f-alert">{alerterror.age}</small>) : "" : ""
+                        }
                         <br />
                         <Form.Label className="f-color fw-600 text-uppercase">
                           NEGATIVE REPORT DATE:
@@ -263,20 +305,18 @@ class Enrol extends Component {
                         <Form.Control
                           type="date"
                           placeholder="Report Date"
-                          name="reportDate"
-                          value={setData.reportDate || ''}
-                          className={
-                            setValidate.reportDate.length > 0 ? 'brdAlert' : ''
-                          }
+                          name="report"
+                          value={setdata.report || ''}
+
+                          className={(alerterror.report !== undefined) ? (alerterror.report.length > 0) ? 'brdAlert' : "" : ""}
+
                           onChange={this.validAlerts}
                         />
-                        {setValidate.reportDate.length > 0 ? (
-                          <small className="f-alert">
-                            {setValidate.reportDate}
-                          </small>
-                        ) : (
-                          ''
-                        )}
+
+                        {
+                          (alerterror.report !== undefined) ? (alerterror.report.length > 0) ? (<small className="f-alert">{alerterror.report}</small>) : "" : ""
+                        }
+
                         <br />
                       </>
                     ) : (
@@ -289,15 +329,13 @@ class Enrol extends Component {
                       type="text"
                       placeholder="City / Area "
                       name="area"
-                      value={setData.area || ''}
-                      className={setValidate.area.length > 0 ? 'brdAlert' : ''}
+                      value={setdata.area || ''}
+                      className={(alerterror.area !== undefined) ? (alerterror.area.length > 0) ? 'brdAlert' : "" : ""}
                       onChange={this.validAlerts}
                     />
-                    {setValidate.area.length > 0 ? (
-                      <small className="f-alert">{setValidate.area}</small>
-                    ) : (
-                      ''
-                    )}
+                    {
+                      (alerterror.area !== undefined) ? (alerterror.area.length > 0) ? (<small className="f-alert">{alerterror.area}</small>) : "" : ""
+                    }
                     <br />
                     <Form.Label className="f-color fw-600 text-uppercase">
                       Pincode
@@ -308,17 +346,13 @@ class Enrol extends Component {
                       name="pincode"
                       maxlength="6"
                       size="6"
-                      value={setData.pincode || ''}
-                      className={
-                        setValidate.pincode.length > 0 ? 'brdAlert' : ''
-                      }
+                      value={setdata.pincode || ''}
+                      className={(alerterror.pincode !== undefined) ? (alerterror.pincode.length > 0) ? 'brdAlert' : "" : ""}
                       onChange={this.validAlerts}
                     />
-                    {setValidate.pincode.length > 0 ? (
-                      <small className="f-alert">{setValidate.pincode}</small>
-                    ) : (
-                      ''
-                    )}
+                    {
+                      (alerterror.pincode !== undefined) ? (alerterror.pincode.length > 0) ? (<small className="f-alert">{alerterror.pincode}</small>) : "" : ""
+                    }
                     <br />
                     <Button
                       className="bg-frntdark border-0"

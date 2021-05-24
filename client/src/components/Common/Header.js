@@ -1,20 +1,19 @@
 import React, { Component } from 'react';
-import { Nav, Navbar, Modal , Button } from 'react-bootstrap';
-import './Common.css'; 
+import { Nav, Navbar, Modal, Button } from 'react-bootstrap';
+import './Common.css';
 import { NavLink, Link } from 'react-router-dom';
 import Enrol from '../Register/Register';
 
 class Head extends Component {
-  constructor(props) {
-    super(props);
-    this.acceptTerm = this.acceptTerm.bind(this);
+  constructor() {
+    super();
     this.state = {
-      show: 'false',
+      view: "false"
     };
   }
-  acceptTerm() {
+  acceptTerm = () => {
     this.setState({
-      show: !this.state.show,
+      view: !this.state.view
     });
   }
 
@@ -22,13 +21,13 @@ class Head extends Component {
     return (
       <>
         {/* modal start */}
-        <Modal show={this.state.show} size="lg" onHide={this.acceptTerm}>
+        <Modal show={this.state.view} size="lg" onHide={this.acceptTerm}>
           <Modal.Header className="border-0" closeButton>
-              {/* <Modal.Title>Modal heading</Modal.Title> */}
-            </Modal.Header>
+            {/* <Modal.Title>Modal heading</Modal.Title> */}
+          </Modal.Header>
           <Modal.Body className="pt-0 pb-0">
             {/* eroll  */}
-            <Enrol userType="donate"/>
+            <Enrol usertype="donate plasma" />
           </Modal.Body>
           {/* <Modal.Footer>
             <Button variant="secondary" onClick={this.acceptTerm}>
