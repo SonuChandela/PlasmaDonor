@@ -6,29 +6,42 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
 
 class List extends Component {
-  constructor(){
+  constructor() {
     super();
     this.state = {
-      userList : ""
-     }
+      userList: ""
+    }
   }
-  componentDidMount(){
+  componentDidMount() {
     axios.get('http://localhost:5000/user')
-    .then(res => {
-      let list = res.data;
-      this.setState({
-        userList : list.Users
-      })
-    });
+      .then(res => {
+        let list = res.data;
+        this.setState({
+          userList: list.Users
+        })
+      });
   }
 
-  
+  searchgroup = (e, list) => {
+    const searchValue = e.target.value;
+    this.setState({
+      ...this.state,
+      searchKey: searchValue
+    })
+  }
+
   render() {
-    const {userList} = this.state;
-    const bloodGroup = ["A+","A-","B+","B-","AB+","AB-","O+","O-"];
+    console.log(this.state)
+    const { userList, searchKey } = this.state;
+    const bloodGroup = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
     const bloodGroupList = [];
-    for(const [index,value] of bloodGroup.entries()){
-      bloodGroupList.push(<li key={index}><span>{value}</span></li>)
+    for (const [index, value] of bloodGroup.entries()) {
+      bloodGroupList.push(<li key={index} onClick={(e) => {
+        this.setState({
+          ...this.state,
+          searchKey: e.target.textContent
+        })
+      }}><span>{value}</span></li>)
     }
     return (
       <>
@@ -42,7 +55,8 @@ class List extends Component {
           </div>
         </div>
         {/* search */}
-        <Searchbar />
+        <Searchbar searchmethod={this.searchgroup} list={userList} />
+        {/* <Searchbar searchKey={() => this.searchgroup(userList)} /> */}
         {/* search */}
 
         <div className="container">
@@ -54,10 +68,18 @@ class List extends Component {
 
           <div className="row mt-4 mb-4">
             {
-              Object.values(userList).map((userData,i) => {
+
+              Object.values(userList).filter((searchValue) => {
+                if (searchKey === undefined || searchKey === "") {
+                  return searchValue
+                } else if (searchValue.area.includes(searchKey.toLowerCase()) || searchValue.pincode.includes(searchKey.toLowerCase()) || searchValue.bloodgroup.toLowerCase().includes(searchKey.toLowerCase())) {
+                  console.log(searchValue.bloodgroup.includes(searchKey.toLowerCase()));
+                  return searchValue
+                }
+              }).map((userData, i) => {
                 const datalist = userData;
-                return(
-                      <div className="col-lg-3 col-md-6 col-12" key={i} >
+                return (
+                  <div className="col-lg-3 col-md-6 col-12" key={i} >
                     <div className="donor-card">
                       <div className="col-lg-12 mt-2 mb-2">
                         <div className="row mr-0 ml-0">
@@ -75,23 +97,23 @@ class List extends Component {
                       <div className="col-lg-12 donor-dtl">
                         <ul>
                           {
-                            Object.entries(datalist).map((list,index) =>{
-                              return(
+                            Object.entries(datalist).map((list, index) => {
+                              return (
                                 <>
-                                {
-                                  (list[0] === "_id" || list[0] === "__v" || list[0] === "createdAt" ) ? "":
-                                <>
-                                  <li key={index}>
-                                    <span className={(list[0] === "email") ? "text-lowercase" : ""}>
-                                      <b className="text-uppercase">{list[0]}:</b>
+                                  {
+                                    (list[0] === "_id" || list[0] === "__v" || list[0] === "createdAt") ? "" :
+                                      <>
+                                        <li key={index}>
+                                          <span className={(list[0] === "email") ? "text-lowercase" : ""}>
+                                            <b className="text-uppercase">{list[0]}:</b>
                                       &nbsp; {list[1]}
-                                    </span>
-                                  </li>
-                                </>
-                                }
+                                          </span>
+                                        </li>
+                                      </>
+                                  }
                                 </>
                               )
-                          })
+                            })
                           }
                         </ul>
                       </div>

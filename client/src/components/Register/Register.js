@@ -23,7 +23,7 @@ class Enrol extends Component {
     let { name, value } = e.target;
     const alertError = {};
     switch (name) {
-      case 'user':
+      case 'usertype':
         alertError[name] = (value === "" || value === undefined || value === null) ? 'select a User Type' : "";
         break;
       case 'name':
@@ -81,17 +81,6 @@ class Enrol extends Component {
     return diffrenceInDay;
   };
 
-  // formisvlid(validation, data) {
-  //   let valid = true;
-  //   Object.values(validation).forEach((value) => {
-  //     value.length > 0 && (valid = false);
-  //   });
-  //   Object.values(data).forEach((value) => {
-  //     value.length < 1 && (valid = false);
-  //   });
-  //   return valid;
-  // }
-
 
   submitForm = (e) => {
     e.preventDefault();
@@ -121,51 +110,6 @@ class Enrol extends Component {
     }).catch(() => {
       alert("Ooops, Somthing wasn't right Please file all fields.");
     })
-    // alert("fille the form")
-    // }
-    // for (let value of Object.values(filleddata)) {
-    //   let dsp = (value.length > 0) ? submitdata = "true" : value
-    //   console.log(dsp);
-    // }
-    // const vst = new Promise(function (resolve, reject) {
-
-
-    //   if (submitdata == "b") {
-    //     resolve("abc");
-    //   }
-    //   else {
-    //     reject("rong");
-    //   }
-    //   // let fillvalue = Object.values(filleddata);
-    //   // let alertvalue = Object.values(alertdata);
-    //   // for (let value of fillvalue) {
-    //   //   (value.length > 0) ? submitdata = "true" : fillvalue
-    //   // }
-    //   // for (let value of alertvalue) {
-    //   //   (value.length < 1) ? submitdata = "true" : alertvalue
-    //   // }
-    // })
-    // vst.then((tst) => {
-    //   console.log(tst);
-    // }).catch((tst) => {
-    //   console.log(tst);
-    // })
-
-
-    // let data = this.state.data.setdata;
-    // axios
-    //   .post('http://localhost:5000/register', data)
-    //   .then((res) => {
-    //     let msg = res.data.setdata;
-    //     console.log(msg);
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
-    // if (this.formisvlid(this.state.setValidate, this.state.data)) {
-    // } else {
-    //   alert("Ooops, Somthing wasn't right Please file all fields.");
-    // }
   }
 
   render() {
@@ -177,9 +121,9 @@ class Enrol extends Component {
             <div className="row justify-content-center">
               <div className="col-lg-12 col-md-12 col-12 rounded bg-bright  mb-4 pb-4">
                 <h2 className="f-color  text-center">
-                  {setdata.user === this.props.usertype
+                  {setdata.usertype === this.props.usertype
                     ? 'I want to donate plasma'
-                    : (setdata.user === "request plasma") ? 'I am searching for Plasma donor' : 'Select User Type'
+                    : (setdata.usertype === "request plasma") ? 'I am searching for Plasma donor' : 'Select User Type'
                   }
                 </h2>
                 <Form action="" onSubmit={this.validAlerts}>
@@ -191,16 +135,16 @@ class Enrol extends Component {
                       as="select"
                       ref={this.textInput}
                       onChange={this.validAlerts}
-                      name="user"
+                      name="usertype"
                       defaultValue=""
-                      className={(alerterror.user !== undefined) ? (alerterror.user.length > 0) ? 'brdAlert' : "" : ""}
+                      className={(alerterror.usertype !== undefined) ? (alerterror.usertype.length > 0) ? 'brdAlert' : "" : ""}
                     >
                       <option selected value="">Select User Type</option>
                       <option value="donate plasma">Donate Plasma</option>
                       <option value="request plasma">Request Plasma</option>
                     </Form.Control>
                     {
-                      (alerterror.user !== undefined) ? (alerterror.user.length > 0) ? (<small className="f-alert text-capitalize">{alerterror.user}</small>) : "" : ""
+                      (alerterror.usertype !== undefined) ? (alerterror.usertype.length > 0) ? (<small className="f-alert text-capitalize">{alerterror.usertype}</small>) : "" : ""
                     }
                     <br />
                     <Form.Label className="f-color fw-600 text-uppercase">
