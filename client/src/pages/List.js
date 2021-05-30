@@ -3,23 +3,24 @@ import '../globcss/App.css';
 import Searchbar from '../components/Search/Searchbar';
 import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import axios from 'axios';
+import { withRouter } from "react-router-dom";
 
 class List extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+    let setList = (this.props.match.params.rquesttype === "donor") ? this.props.donorData : this.props.requestData
     this.state = {
-      userList: ""
+      userList: Object.values(setList)
     }
   }
-  componentDidMount() {
-    axios.get('http://localhost:5000/user')
-      .then(res => {
-        let list = res.data;
-        this.setState({
-          userList: list.Users
-        })
-      });
+
+  componentDidUpdate = (prevProps, prevState) => {
+    if (prevProps.match.params.rquesttype !== this.props.match.params.rquesttype) {
+      let setList = (this.props.match.params.rquesttype === "donor") ? this.props.donorData : this.props.requestData
+      this.setState({
+        userList: Object.values(setList)
+      })
+    }
   }
 
   searchgroup = (e, list) => {
@@ -29,9 +30,7 @@ class List extends Component {
       searchKey: searchValue
     })
   }
-
   render() {
-    console.log(this.state)
     const { userList, searchKey } = this.state;
     const bloodGroup = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
     const bloodGroupList = [];
@@ -73,7 +72,6 @@ class List extends Component {
                 if (searchKey === undefined || searchKey === "") {
                   return searchValue
                 } else if (searchValue.area.includes(searchKey.toLowerCase()) || searchValue.pincode.includes(searchKey.toLowerCase()) || searchValue.bloodgroup.toLowerCase().includes(searchKey.toLowerCase())) {
-                  console.log(searchValue.bloodgroup.includes(searchKey.toLowerCase()));
                   return searchValue
                 }
               }).map((userData, i) => {
@@ -86,7 +84,7 @@ class List extends Component {
                           <div className="col-lg-2 col-2 pl-2 pr-2 d-flex justify-content-left align-items-center">
                             <img src={process.env.PUBLIC_URL + '/images/icon/blood-drop.svg'} alt="" />
                           </div>
-                          <div className="col-lg-8 col-8 pr-0 pl-0">
+                          <div className="col-lg-8 col-8 pr-0 pl-0 text-center">
                             <span className="mb-0 text-uppercase">{userData.usertype}</span>
                           </div>
                           <div className="col-lg-2 col-2 d-flex justify-content-center align-items-center bg-frntdark rounded">
@@ -133,4 +131,4 @@ class List extends Component {
     );
   }
 }
-export default List;
+export default withRouter(List);
